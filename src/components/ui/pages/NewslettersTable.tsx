@@ -109,7 +109,12 @@ export function NewslettersTable() {
   }, [])
 
   const isLoading = newsletters.length === 0
-
+  if(isloading){
+    return <div className="flex items-center justify-center h-screen">
+      <LoadingSpinner/>
+    </div>
+  }
+  
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -147,7 +152,7 @@ export function NewslettersTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-        {isLoading ? <LoadingSpinner/> :
+        {
             <Table>
             <TableHeader className="bg-gray-100 text-gray-700">
                 {table.getHeaderGroups().map((headerGroup) => (
