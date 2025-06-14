@@ -11,7 +11,8 @@ RUN if [ "$NODE_ENV" = "production" ]; then \
     fi
 COPY . .
 CMD if [ "$NODE_ENV" = "production" ]; then \
-        npm run start; \
+        npm run build; \
+        npx serve -s dist -l $PORT; \
     else \
         npm run dev; \
     fi
