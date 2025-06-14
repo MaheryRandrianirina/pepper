@@ -1,18 +1,17 @@
-FROM npm:latest
+FROM node:22-alpine
 WORKDIR /app
 COPY package.json package-lock.json ./
-ENV NODE_ENV development \
-    PORT 5173
+ENV NODE_ENV=development \
+    PORT=5173
 EXPOSE $PORT
-RUN npm install -g yarn
 RUN if [ "$NODE_ENV" = "production" ]; then \
-        yarn install --production; \
+        npm install --only=production; \
     else \
-        yarn install; \
+        npm install; \
     fi
 COPY . .
 CMD if [ "$NODE_ENV" = "production" ]; then \
-        yarn start; \
+        npm run start; \
     else \
-        yarn dev; \
+        npm run dev; \
     fi

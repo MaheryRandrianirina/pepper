@@ -40,3 +40,21 @@
 .read-the-docs {
   color: #888;
 }
+
+/* nav styles */
+nav {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+
+  a.active {
+    color: var(--pepper-blue);
+  }
+}
+
+@media screen and (width < 400px) {
+  nav {
+    font-size: 0.8rem;
+    width: 80%;
+  }
+}
