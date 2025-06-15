@@ -13,7 +13,7 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-import { ChevronDown } from "lucide-react"
+import { CheckCircle2Icon, ChevronDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/table"
 import type { Newsletter } from "@/types/newsletter"
 import { LoadingSpinner } from "../atoms/Spinner"
+import { ActionAlert } from "../atoms/ActionAlert"
 
 
 export const columns: ColumnDef<Newsletter>[] = [
@@ -75,12 +76,15 @@ export const columns: ColumnDef<Newsletter>[] = [
     }
 ]
 
+let toastMessageTimer: NodeJS.Timeout|null = null
+
 export function Home() {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [newsletters, setNewsletters] = useState<Newsletter[]>([])
+  const [toastMessage, setToastMessage] = useState<string|null>(null)
 
   const table = useReactTable({
     data: newsletters,
@@ -102,11 +106,19 @@ export function Home() {
   })
 
   useEffect(()=>{
+    // Remove toast message after 3 seconds
+    if(toastMessage){
+      toastMessageTimer = setTimeout(() => {
+        setToastMessage(null)
+      }
+      , 3000)
+    }
+
     // fetch newsletters data
     fetch("https://mocki.io/v1/134d4787-15e1-4c36-8126-d6f491b10ea6").then(response => response.json())
       .then(jsonRes => setNewsletters(jsonRes))
       .catch(err => console.error('Error fetching books:', err))
-  }, [])
+  }, [toastMessage])
 
   const isLoading = newsletters.length === 0
   if(isLoading){
@@ -116,6 +128,8 @@ export function Home() {
   }
   
   return (
+    <>
+    {toastMessage && <ActionAlert message={toastMessage}/>}
     <div className="w-full">
       <div className="flex items-center py-4">
         <DropdownMenu>
@@ -134,6 +148,9 @@ export function Home() {
                   (filter) => filter.id === "type" && filter.value === type
                 )}
                 onCheckedChange={(value) => {
+                  if(toastMessageTimer) clearTimeout(toastMessageTimer)
+                  setToastMessage(`L'admin a filtré les newsletters par : ${type}`)
+                  
                   setColumnFilters((prev) => {
                     if (value) {
                       return [{ id: "type", value: type }]
@@ -204,5 +221,6 @@ export function Home() {
             </Table>}
       </div>
     </div>
+    </>
   )
 }
