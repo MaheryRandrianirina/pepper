@@ -75,7 +75,7 @@ export const columns: ColumnDef<Newsletter>[] = [
     }
 ]
 
-export function NewslettersTable() {
+export function Home() {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -109,7 +109,7 @@ export function NewslettersTable() {
   }, [])
 
   const isLoading = newsletters.length === 0
-  if(isloading){
+  if(isLoading){
     return <div className="flex items-center justify-center h-screen">
       <LoadingSpinner/>
     </div>

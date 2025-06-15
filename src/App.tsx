@@ -1,5 +1,5 @@
 import './App.css'
-import { NewslettersTable } from '@/components/ui/pages/NewslettersTable'
+import { Home } from '@/components/ui/pages/Home'
 import { NavigationMenu } from './components/ui/molecules/NavigationMenu'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { MyAcount } from './components/ui/pages/MyAccount'
@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter>
       <NavigationMenu></NavigationMenu>
       <Routes>
-          <Route path="/" element={<NewslettersTable />} />
+          <Route path="/" element={<Home />} />
           <Route path="/mon-compte" element={<MyAcount />} />
           <Route path="/support-reseau" element={<NetworkSupport />} />
         </Routes>
